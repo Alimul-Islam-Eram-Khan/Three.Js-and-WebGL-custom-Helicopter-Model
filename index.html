@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Helicopter - CSE4204 Project</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="container">
+        <div id="loading">
+            <div class="spinner"></div>
+            <div>Loading 3D Helicopter...</div>
+        </div>
+        
+        <div id="info" style="display: none;">
+            <h3>🚁 3D Helicopter Visualization</h3>
+            <p>CSE4204 Computer Graphics Lab Project</p>
+            <div>FPS: <span id="fps">60</span></div>
+            <div>Light Angle: <span id="lightAngle">0°</span></div>
+            <div>Camera Zoom: <span id="cameraZoom">15</span></div>
+            <div>Day/Night: <span id="dayNight">Day</span></div>
+        </div>
+        
+        
+        <div id="controls" style="display: none;">
+            <div class="control-item"><strong>Controls:</strong></div>
+            <div class="control-item">🖱️ Mouse: Rotate light (sun) around helicopter</div>
+            <div class="control-item">🖱️ Click: Start helicopter flight loop</div>
+            <div class="control-item">🖱️ Wheel: Adjust camera zoom</div>
+            <div class="control-item">⌨️ WASD: Move camera around helicopter</div>
+            <div class="control-item">↑↓: Camera height adjustment</div>
+            <div class="control-item">Space: Toggle animation and sound</div>
+            <div class="control-item">Shift: Toggle light rotation speed</div>
+            <div class="control-item">N: Toggle day/night cycle</div>
+            <div class="control-item">C: Toggle camera follow mode</div>
+        </div>
+    </div>
+
+    <!-- Audio for rotor sound -->
+    <audio id="rotorSound" src="rotor.mp3" loop preload="auto"></audio>
+
+    <!-- Three.js CDN with local fallback -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Check if Three.js loaded, otherwise try local fallback
+        if (typeof THREE === 'undefined') {
+            document.getElementById('loading').innerHTML = `
+                <div style="color: red;">
+                    <h3>Error Loading Three.js</h3>
+                    <p>Failed to load Three.js from CDN. Attempting local fallback...</p>
+                </div>
+            `;
+            var script = document.createElement('script');
+            script.src = 'three.min.js';
+            script.onerror = function() {
+                document.getElementById('loading').innerHTML = `
+                    <div style="color: red;">
+                        <h3>Error Loading Three.js</h3>
+                        <p>Failed to load Three.js. Please ensure 'three.min.js' is in the project directory or check your internet connection.</p>
+                    </div>
+                `;
+            };
+            document.head.appendChild(script);
+        }
+    </script>
+    <script src="shaders.js"></script>
+    <script src="helicopter.js"></script>
+    <script src="environment.js"></script>
+    <script src="controls.js"></script>
+    <script src="animations.js"></script>
+    <script src="main.js"></script>
+    <script src="weather.js"></script>
+    <script src="flightpath.js"></script>
+    <script src="hud.js"></script>
+    <script src="terrain.js"></script>
+    <script src="wind.js"></script>
+    <script src="interactions.js"></script>
+    <script src="clouds.js"></script>
+    <script src="spotlight.js"></script>
+    <script src="helipad.js"></script>
+    <script>
+        // Extend init and animate to include all features
+        const originalInit = init;
+        init = function() {
+            originalInit();
+            if (typeof initWeather === 'function') initWeather();
+            if (typeof initFlightPath === 'function') initFlightPath();
+            if (typeof initHUD === 'function') initHUD();
+            if (typeof initTerrain === 'function') initTerrain();
+            if (typeof initWind === 'function') initWind();
+            if (typeof initInteractions === 'function') initInteractions();
+            if (typeof initClouds === 'function') initClouds();
+            if (typeof initSpotlight === 'function') initSpotlight();
+            if (typeof initHelipad === 'function') initHelipad();
+        };
+
+        const originalAnimate = animate;
+        animate = function(currentTime) {
+            originalAnimate(currentTime);
+            if (typeof updateWeather === 'function') updateWeather(currentTime);
+            if (typeof updateFlightPath === 'function') updateFlightPath();
+            if (typeof updateHUD === 'function') updateHUD();
+            if (typeof updateTerrain === 'function') updateTerrain(currentTime);
+            if (typeof updateWind === 'function') updateWind(currentTime);
+            if (typeof updateInteractions === 'function') updateInteractions();
+            if (typeof updateClouds === 'function') updateClouds(currentTime);
+            if (typeof updateSpotlight === 'function') updateSpotlight();
+            if (typeof updateHelipad === 'function') updateHelipad(currentTime);
+        };
+    </script>
+</body>
+</html>
