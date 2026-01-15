@@ -121,6 +121,4 @@ The visualization showcases a fully textured helicopter model, interactive camer
 | 19    | UI Styling and Loading Screen          | Implemented  |
 
  
-   ```bash
-   git clone https://github.com/yourusername/3d-helicopter-visualization.git
-   cd 3d-helicopter-visualization
+  
